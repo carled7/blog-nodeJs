@@ -1,0 +1,14 @@
+.artigos {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem
+}
+
+.artigo-texto {
+    height: 3rem;
+}
+
+.artigo-data {
+    padding-bottom: 1rem;
+    margin-top: 1rem;
+}
