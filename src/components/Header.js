@@ -6,7 +6,7 @@ function Header() {
     const StyledHeader = styled.div`
 
         display: flex;
-        
+
         .headerContainer {
         display: flex;
         padding: 1rem;
@@ -43,7 +43,7 @@ function Header() {
                     <nav>
                         <div className="boltBorder background1" />
                         <ul>
-                            <HeaderButton name="Página Inicial" link="index" />
+                            <HeaderButton name="Página Inicial" link="/" />
                             <HeaderButton name="Nova Postagem" link="post" />
                             <HeaderButton name="Sobre nós" link="about" />
                             <HeaderButton name="Contato" link="contact" />

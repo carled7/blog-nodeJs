@@ -1,20 +1,18 @@
+//Import dos modulos
 import styled from "styled-components"
-import { CSSReset } from "../src/components/CSSReset"
-import Header from "../src/components/Header"
-import 'typeface-roboto'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons"
+import { useEffect, useState } from "react"
+import axios from "axios";
+import 'typeface-roboto'
+
+//Import dos componentes
+import Header from "../src/components/Header"
 import PostPreview from "../src/components/PostPreview"
+import { CSSReset } from "../src/components/CSSReset"
 
-
-function homePage() {
-
-    const StyledBody = styled.div`
+const StyledBody = styled.div`
     display: flex;
-
-    * {
-        font-family: 'Roboto', sans-serif;
-    }
 
     input, button {
         padding: 1rem;
@@ -26,30 +24,7 @@ function homePage() {
 
     h1 {
         text-align: center;
-        letter-spacing: .5rem;
-    }
-
-    .color1 { color: #f23e02 };
-    .background1 { background-color: #f23e02 };
-
-    .color2 { color: #fef5c8 };
-    .background2 { background-color: #fef5c8 };
-
-    .color3 { color: #00988d };
-    .background3 { background-color: #00988d };
-    
-    .color4 { color: #2c6b74 };
-    .background4 { background-color: #2c6b74 };
-
-    .color5 { color: #013750 };
-    .background5 { background-color: #013750 };
-
-    .boltBorder {
-        height: .5rem;
-    }
-
-    .lightBorder {
-        height: .2rem;
+        letter-spacing: .2rem;
     }
 
     .headerContainer {
@@ -84,44 +59,69 @@ function homePage() {
     }
 
     .PostComponent {
-        width: 100%;
+        width: 80%;
+        margin-left: auto;
+        margin-right: auto;
+        padding-top: 2rem;
         display: grid;
         grid-template-columns: 1fr 1fr;
-        gap: 1rem;
+        gap: 4rem;
     }
-    
+
+    a {
+        text-decoration: none;
+    }
 `
 
-    return (
+function homePage() {
 
-        <StyledBody>
-            <CSSReset />
-            <div className="headerContainer">
-                <Header />
-            </div>
-            <div className="bodyContainer">
-                <div className="bodyHeader">
-                    <div className="bodyHeaderTittle">
-                        <h1 className="color3">ULTIMAS POSTAGENS</h1>
+    const [posts, setPosts] = useState(null);
+
+    useEffect(() => {
+        const options = { method: 'GET', url: 'http://localhost:4002/posts/' };
+        axios.request(options).then((response) => {
+            setPosts(response.data);
+        });
+    }, []);
+
+    if (!posts) return null
+    
+    else {
+
+        
+
+        return (
+            <StyledBody>
+                <CSSReset />
+                <div className="headerContainer">
+                    <Header />
+                </div>
+                <div className="bodyContainer">
+                    <div className="bodyHeader">
+                        <div className="bodyHeaderTittle">
+                            <h1 className="color3">ULTIMAS POSTAGENS</h1>
+                        </div>
+                        <div className="bodyHeaderSearch">
+                            <input type="text" placeholder="Pesquisar..." className="background2" />
+                            <button type="button" className="background2">
+                                <FontAwesomeIcon icon={faMagnifyingGlass} />
+                            </button>
+                        </div>
                     </div>
-                    <div className="bodyHeaderSearch">
-                        <input type="text" placeholder="Pesquisar..." className="background2" />
-                        <button type="button" className="background2">
-                            <FontAwesomeIcon icon={faMagnifyingGlass} />
-                        </button>
+
+                    <div className="PostComponent">
+                        {
+                            posts.reverse().map(element => {
+                                console.log("***", element)
+                                return (<PostPreview {...element} />)
+                            })
+                        }
                     </div>
                 </div>
+            </StyledBody>
+        )
 
-                <div className="PostComponent">
-                    <PostPreview />
-                    <PostPreview />
-                    <PostPreview />
-                    <PostPreview />
-                </div>
-
-            </div>
-        </StyledBody>
-    )
+    }
 }
 
 export default homePage
